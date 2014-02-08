@@ -8,6 +8,10 @@ public class RequestToken {
         mTokenStr = tokenStr;
     }
     
+    public String getValidToken() {
+        return mTokenStr;
+    }
+    
     @Override
     public String toString() {
         return "[token:" + mTokenStr + "]";

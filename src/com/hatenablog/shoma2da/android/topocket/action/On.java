@@ -5,8 +5,8 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
-import android.widget.Toast;
 
+import com.hatenablog.shoma2da.android.topocket.oauth.AuthPageViewer;
 import com.hatenablog.shoma2da.android.topocket.oauth.RequestTokenLoader;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
 
@@ -34,7 +34,8 @@ class On implements SwitchActionStrategy, LoaderCallbacks<RequestToken> {
 
     @Override
     public void onLoadFinished(Loader<RequestToken> loader, RequestToken token) {
-        Toast.makeText(mContext, token.toString(), Toast.LENGTH_SHORT).show();
+        AuthPageViewer authPageViewer = new AuthPageViewer(mContext, token);
+        authPageViewer.go();
     }
 
     @Override public void onLoaderReset(Loader<RequestToken> arg0) {}
