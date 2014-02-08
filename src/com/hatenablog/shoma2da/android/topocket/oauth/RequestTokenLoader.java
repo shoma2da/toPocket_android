@@ -11,6 +11,7 @@ import java.util.Scanner;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
+import com.hatenablog.shoma2da.android.topocket.oauth.model.ConsumerKey;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
 
 public class RequestTokenLoader extends AsyncTaskLoader<RequestToken> {
@@ -19,6 +20,10 @@ public class RequestTokenLoader extends AsyncTaskLoader<RequestToken> {
 
     public RequestTokenLoader(Context context) {
         super(context);
+    }
+    
+    ConsumerKey createConsumerKey() {
+        return new ConsumerKey();
     }
 
     @Override
@@ -32,7 +37,7 @@ public class RequestTokenLoader extends AsyncTaskLoader<RequestToken> {
             
             OutputStream outputStream = connection.getOutputStream();
             PrintWriter printWriter = new PrintWriter(outputStream);
-            printWriter.write("consumer_key=23453-769115aa733ac32002168905&redirect_uri=http://yahoo.co.jp");
+            printWriter.write(String.format("consumer_key=%s&redirect_uri=http://yahoo.co.jp", createConsumerKey().getValidKey()));
             printWriter.flush();
             printWriter.close();
             
