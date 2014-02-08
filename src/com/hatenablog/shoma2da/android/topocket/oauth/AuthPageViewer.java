@@ -9,7 +9,7 @@ import android.net.Uri;
 public class AuthPageViewer {
     
     public static final String URL_STR = "https://getpocket.com/auth/authorize?request_token=%s&redirect_uri=%s";
-    public static final String REDIRECT_URL_STR = "http://yahoo.co.jp";
+    public static final String REDIRECT_URL_STR = "topocket://";
     
     private Context mContext;
     private RequestToken mRequestToken;
