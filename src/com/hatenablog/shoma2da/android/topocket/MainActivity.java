@@ -12,7 +12,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         CheckBox startWatchClipboardSwitch = (CheckBox)findViewById(R.id.StartWatchClipboardSwitch);
-        startWatchClipboardSwitch.setOnCheckedChangeListener(new SwitchListener());
+        startWatchClipboardSwitch.setOnCheckedChangeListener(new SwitchListener(getLoaderManager()));
     }
 
 }
