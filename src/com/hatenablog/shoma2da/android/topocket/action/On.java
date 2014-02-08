@@ -5,7 +5,6 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.hatenablog.shoma2da.android.topocket.oauth.RequestTokenLoader;
