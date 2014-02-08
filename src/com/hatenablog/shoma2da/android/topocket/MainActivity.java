@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.CheckBox;
 
 public class MainActivity extends Activity {
@@ -21,6 +22,9 @@ public class MainActivity extends Activity {
         
         //チェック時の動作を規定
         startWatchClipboardSwitch.setOnCheckedChangeListener(new SwitchListener(getLoaderManager()));
+        
+        //URLスキーマで起動された時はアクセストークンを取得できるかも
+        Log.d("test", "data is " + getIntent().getDataString());
     }
 
 }
