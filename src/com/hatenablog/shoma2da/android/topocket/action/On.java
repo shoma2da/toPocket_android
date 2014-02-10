@@ -5,10 +5,12 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.hatenablog.shoma2da.android.topocket.oauth.AuthPageViewer;
 import com.hatenablog.shoma2da.android.topocket.oauth.RequestTokenLoader;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
+import com.hatenablog.shoma2da.android.topocket.oauth.model.util.RequestTokenSaver;
 
 class On implements SwitchActionStrategy, LoaderCallbacks<RequestToken> {
     
@@ -34,6 +36,11 @@ class On implements SwitchActionStrategy, LoaderCallbacks<RequestToken> {
 
     @Override
     public void onLoadFinished(Loader<RequestToken> loader, RequestToken token) {
+        //リクエストトークンの保存
+        RequestTokenSaver saver = new RequestTokenSaver(PreferenceManager.getDefaultSharedPreferences(mContext), token);
+        saver.save();
+        
+        //認証画面への遷移
         AuthPageViewer authPageViewer = new AuthPageViewer(mContext, token);
         authPageViewer.go();
     }
