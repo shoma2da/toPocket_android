@@ -13,6 +13,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:button="@null"
+        android:background="@drawable/selector_checkbox"
         />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/StartWatchClipboardSwitch"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:text="スイッチを押してPocketへの投稿を簡単にしましょう。"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
