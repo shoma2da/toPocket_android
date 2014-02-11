@@ -9,7 +9,7 @@ public class SwitchActionStrategyFactory {
         if (isEnabled) {
             return new On(context, loaderManager);
         }
-        return new Off();
+        return new Off(context);
     }
     
 }

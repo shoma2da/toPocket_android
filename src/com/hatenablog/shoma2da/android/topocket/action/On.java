@@ -3,10 +3,12 @@ package com.hatenablog.shoma2da.android.topocket.action;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import com.hatenablog.shoma2da.android.topocket.WatchClipboardService;
 import com.hatenablog.shoma2da.android.topocket.oauth.AuthPageViewer;
 import com.hatenablog.shoma2da.android.topocket.oauth.RequestTokenLoader;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
@@ -26,6 +28,8 @@ class On implements SwitchActionStrategy, LoaderCallbacks<RequestToken> {
     @Override
     public void act() {
         mLoaderManager.getLoader(0).forceLoad();
+        
+        mContext.startService(new Intent(mContext, WatchClipboardService.class));
     }
 
     @Override
