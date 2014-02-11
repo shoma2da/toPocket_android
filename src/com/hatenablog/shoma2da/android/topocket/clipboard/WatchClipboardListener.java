@@ -2,6 +2,8 @@ package com.hatenablog.shoma2da.android.topocket.clipboard;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.content.ClipboardManager;
 import android.content.ClipboardManager.OnPrimaryClipChangedListener;
@@ -10,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.hatenablog.shoma2da.android.topocket.api.AddRequestManager;
 
 public class WatchClipboardListener implements OnPrimaryClipChangedListener {
@@ -26,6 +29,8 @@ public class WatchClipboardListener implements OnPrimaryClipChangedListener {
     
     @Override
     public void onPrimaryClipChanged() {
+        FlurryAgent.logEvent("clipboard_change");
+        
         if (mClipboardManager.getPrimaryClip() == null || mClipboardManager.getPrimaryClip().getItemAt(0) == null) {
             return;
         }
@@ -38,6 +43,11 @@ public class WatchClipboardListener implements OnPrimaryClipChangedListener {
             
             mAddRequestManager.request(text);
             Toast.makeText(mContext, "Pocketに保存しました。", Toast.LENGTH_SHORT).show();
+            
+            //イベント記録
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("url", text);
+            FlurryAgent.logEvent("add_pocket", params);
         }
     }
     
