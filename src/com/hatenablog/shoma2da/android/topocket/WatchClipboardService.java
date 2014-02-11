@@ -3,13 +3,22 @@ package com.hatenablog.shoma2da.android.topocket;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.hatenablog.shoma2da.android.topocket.api.AddRequestManager;
+import com.hatenablog.shoma2da.android.topocket.clipboard.WatchClipboardListener;
+import com.hatenablog.shoma2da.android.topocket.oauth.model.AccessToken;
+import com.hatenablog.shoma2da.android.topocket.oauth.model.ConsumerKey;
+import com.hatenablog.shoma2da.android.topocket.oauth.model.util.AccessTokenLoader;
+
 public class WatchClipboardService extends Service {
     
     public static int NOTIFICATION_ID = 315;
+    
+    private WatchClipboardListener mWatchClipboardListener;
     
     @Override
     @SuppressWarnings("deprecation")
@@ -24,6 +33,14 @@ public class WatchClipboardService extends Service {
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, builder.getNotification());
         
+        //Clipboard監視を開始
+        ConsumerKey consumerKey = new ConsumerKey();
+        AccessToken accessToken = new AccessTokenLoader(this).load();
+        AddRequestManager addRequestManager = new AddRequestManager(consumerKey, accessToken);
+        ClipboardManager clipboardManager = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        mWatchClipboardListener = new WatchClipboardListener(this, clipboardManager, addRequestManager);
+        clipboardManager.addPrimaryClipChangedListener(mWatchClipboardListener);
+        
         return super.onStartCommand(intent, flags, startId);
     }
     
@@ -32,6 +49,10 @@ public class WatchClipboardService extends Service {
         //Notificatioを消す
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(NOTIFICATION_ID);
+        
+        //Clipboard監視を停止
+        ClipboardManager clipboardManager = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboardManager.removePrimaryClipChangedListener(mWatchClipboardListener);
         
         super.onDestroy();
     }
