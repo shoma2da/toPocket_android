@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.CheckBox;
 
+import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
+import com.hatenablog.shoma2da.android.topocket.oauth.model.util.RequestTokenLoader;
+
 public class MainActivity extends Activity {
 
     @Override
@@ -23,8 +26,11 @@ public class MainActivity extends Activity {
         //チェック時の動作を規定
         startWatchClipboardSwitch.setOnCheckedChangeListener(new SwitchListener(getLoaderManager()));
         
-        //URLスキーマで起動された時はアクセストークンを取得できるかも
-        Log.d("test", "data is " + getIntent().getDataString());
+        //URLスキーマで起動された時はアクセストークンを取得するタイミングかも
+        RequestToken requestToken = new RequestTokenLoader(this).load();
+        if (getIntent().getDataString() != null && requestToken != null) {
+            Log.d("test", "data is " + getIntent().getDataString());
+        }
     }
 
 }
