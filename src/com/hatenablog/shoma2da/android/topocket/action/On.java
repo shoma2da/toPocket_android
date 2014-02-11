@@ -5,8 +5,11 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import com.hatenablog.shoma2da.android.topocket.WatchClipboardService;
 import com.hatenablog.shoma2da.android.topocket.oauth.AuthPageViewer;
@@ -27,8 +30,14 @@ class On implements SwitchActionStrategy, LoaderCallbacks<RequestToken> {
     
     @Override
     public void act() {
-        mLoaderManager.getLoader(0).forceLoad();
+        ConnectivityManager connectivityManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo == null || networkInfo.isConnected() == false) {
+            Toast.makeText(mContext, "エラー！！ネットワークに接続してからもう一度スイッチを押してください", Toast.LENGTH_LONG).show();
+            return;
+        }
         
+        mLoaderManager.getLoader(0).forceLoad();
         mContext.startService(new Intent(mContext, WatchClipboardService.class));
     }
 
