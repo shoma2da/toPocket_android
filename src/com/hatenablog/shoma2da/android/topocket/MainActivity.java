@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.CheckBox;
 
+import com.hatenablog.shoma2da.android.topocket.oauth.model.ConsumerKey;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.util.RequestTokenLoader;
 
@@ -29,7 +29,9 @@ public class MainActivity extends Activity {
         //URLスキーマで起動された時はアクセストークンを取得するタイミングかも
         RequestToken requestToken = new RequestTokenLoader(this).load();
         if (getIntent().getDataString() != null && requestToken != null) {
-            Log.d("test", "data is " + getIntent().getDataString());
+            AccessTokenLoaderCallbackImpl callback = new AccessTokenLoaderCallbackImpl(this, new ConsumerKey(), requestToken);
+            getLoaderManager().initLoader(1, null, callback);
+            getLoaderManager().getLoader(1).forceLoad();
         }
     }
 
