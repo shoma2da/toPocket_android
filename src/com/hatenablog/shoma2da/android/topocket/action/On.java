@@ -30,6 +30,7 @@ class On implements SwitchActionStrategy, LoaderCallbacks<RequestToken> {
     
     @Override
     public void act() {
+        //ネットワーク状態の確認
         ConnectivityManager connectivityManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo == null || networkInfo.isConnected() == false) {
@@ -37,7 +38,12 @@ class On implements SwitchActionStrategy, LoaderCallbacks<RequestToken> {
             return;
         }
         
-        mLoaderManager.getLoader(0).forceLoad();
+        //リクエストトークンを未取得だったら取得しにいく
+        if (new com.hatenablog.shoma2da.android.topocket.oauth.model.util.RequestTokenLoader(mContext).load() == null) {
+            mLoaderManager.getLoader(0).forceLoad();
+        }
+        
+        //サービスを起動
         mContext.startService(new Intent(mContext, WatchClipboardService.class));
     }
 
