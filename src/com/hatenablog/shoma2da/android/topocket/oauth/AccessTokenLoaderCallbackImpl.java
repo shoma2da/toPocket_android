@@ -1,4 +1,4 @@
-package com.hatenablog.shoma2da.android.topocket;
+package com.hatenablog.shoma2da.android.topocket.oauth;
 
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.hatenablog.shoma2da.android.topocket.oauth.AccessTokenLoader;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.AccessToken;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.ConsumerKey;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;

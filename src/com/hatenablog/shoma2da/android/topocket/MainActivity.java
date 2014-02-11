@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.CheckBox;
 
+import com.hatenablog.shoma2da.android.topocket.oauth.AccessTokenLoaderCallbackImpl;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.ConsumerKey;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.util.RequestTokenLoader;
