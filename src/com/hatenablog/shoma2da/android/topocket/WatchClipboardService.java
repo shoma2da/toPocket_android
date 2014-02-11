@@ -14,13 +14,13 @@ public class WatchClipboardService extends Service {
     @Override
     @SuppressWarnings("deprecation")
     public int onStartCommand(Intent intent, int flags, int startId) {
+        //Notificatio表示
         Notification.Builder builder = new Notification.Builder(this);
         builder.setTicker("Pocketに簡単に投稿できます");
         builder.setContentTitle("toPocket");
         builder.setContentText("投稿したいURLをコピーしてください");
         builder.setOngoing(true);
         builder.setSmallIcon(R.drawable.ic_launcher);
-        
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, builder.getNotification());
         
@@ -29,6 +29,7 @@ public class WatchClipboardService extends Service {
     
     @Override
     public void onDestroy() {
+        //Notificatioを消す
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(NOTIFICATION_ID);
         
