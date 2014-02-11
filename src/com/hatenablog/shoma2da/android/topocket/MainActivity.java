@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.CheckBox;
 
+import com.google.android.gms.ads.*;
 import com.hatenablog.shoma2da.android.topocket.oauth.AccessTokenLoaderCallbackImpl;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.ConsumerKey;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
@@ -34,6 +35,11 @@ public class MainActivity extends Activity {
             getLoaderManager().initLoader(1, null, callback);
             getLoaderManager().getLoader(1).forceLoad();
         }
+        
+        //広告引き当て
+        AdView adView = (AdView)this.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
 }

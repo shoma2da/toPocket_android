@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -26,5 +26,13 @@
         android:layout_marginTop="34dp"
         android:text="スイッチを押してPocketへの投稿を簡単にしましょう。"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <com.google.android.gms.ads.AdView android:id="@+id/adView"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_alignParentBottom="true"
+                       android:layout_centerHorizontal="true"
+                       ads:adUnitId="ca-app-pub-8704720300499162/5085357813"
+                       ads:adSize="BANNER" />
 
 </RelativeLayout>
