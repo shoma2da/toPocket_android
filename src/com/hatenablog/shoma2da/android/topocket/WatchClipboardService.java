@@ -2,6 +2,7 @@ package com.hatenablog.shoma2da.android.topocket;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -30,6 +31,7 @@ public class WatchClipboardService extends Service {
         builder.setContentText("投稿したいURLをコピーしてください");
         builder.setOngoing(true);
         builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0));
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, builder.getNotification());
         
