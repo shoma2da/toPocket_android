@@ -4,12 +4,13 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Loader;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.Toast;
 
 import com.hatenablog.shoma2da.android.topocket.oauth.AccessTokenLoader;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.AccessToken;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.ConsumerKey;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
+import com.hatenablog.shoma2da.android.topocket.oauth.model.util.AccessTokenSaver;
 
 public class AccessTokenLoaderCallbackImpl implements LoaderCallbacks<AccessToken> {
     
@@ -30,8 +31,12 @@ public class AccessTokenLoaderCallbackImpl implements LoaderCallbacks<AccessToke
 
     @Override
     public void onLoadFinished(Loader<AccessToken> loader, AccessToken accessToken) {
-        Log.d("test", "onLoadFinished");
-        Log.d("test", accessToken.toString());
+        //アクセストークンの保存
+        AccessTokenSaver saver = new AccessTokenSaver(mContext, accessToken);
+        saver.save();
+        
+        //表示
+        Toast.makeText(mContext, accessToken.getUserName() + "さん、ようこそ！", Toast.LENGTH_LONG).show();
     }
 
     @Override public void onLoaderReset(Loader<AccessToken> loader) { }
