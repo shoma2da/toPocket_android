@@ -8,7 +8,8 @@ import android.widget.CheckBox;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
-import com.google.android.gms.ads.*;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.hatenablog.shoma2da.android.topocket.oauth.AccessTokenLoaderCallbackImpl;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.ConsumerKey;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
@@ -19,7 +20,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Crashlytics.start(this);
+        if (BuildConfig.DEBUG == false) { Crashlytics.start(this); }
         setContentView(R.layout.activity_main);
         
         //チェックボタンの初期表示設定
