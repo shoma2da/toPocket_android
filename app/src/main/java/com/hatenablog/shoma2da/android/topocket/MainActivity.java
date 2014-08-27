@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.CheckBox;
 
+import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.ads.*;
 import com.hatenablog.shoma2da.android.topocket.oauth.AccessTokenLoaderCallbackImpl;
@@ -18,6 +19,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Crashlytics.start(this);
         setContentView(R.layout.activity_main);
         
         //チェックボタンの初期表示設定
