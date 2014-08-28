@@ -1,15 +1,18 @@
 buildscript {
     repositories {
         maven { url 'http://download.crashlytics.com/maven' }
+        mavenCentral()
     }
 
     dependencies {
         classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+        classpath 'com.deploygate:gradle:0.6'
     }
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'crashlytics'
+apply plugin: 'deploygate'
 
 repositories {
     maven { url 'http://download.crashlytics.com/maven' }
@@ -38,4 +41,15 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.google.android.gms:play-services:5.0.89'
     compile 'com.crashlytics.android:crashlytics:1.+'
+}
+
+deploygate {
+    userName = "shoma2da"
+    token = token
+
+    apks {
+        debug {
+            sourceFile = file("build/outputs/apk/app-debug.apk")
+        }
+    }
 }
