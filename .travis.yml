@@ -2,3 +2,7 @@ language: android
 android:
   components:
     - android-20
+
+script:
+  - ./gradlew build
+
