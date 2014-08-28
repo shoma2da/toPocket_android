@@ -1,0 +1,11 @@
+language: android
+android:
+  components:
+    - android-20
+script:
+  - ./gradlew build
+after_success:
+  - ./gradlew uploadDeployGate
+env:
+  global:
+    secure: awhuZEoY67ZBlOy58uYu0CxGTurt9lmkfX9UNOJ9J2lwAW+Mh5/D8WbCB0aWTpvWoFG3aGZBfjHW7Rpilr4/POjte63KlpmROiPTEVOnLZaizhWT6yNNQmH7FOU8rFjEpAxE83mwOeIY/trZAXwS2isOWZyMCqJBAPxu5lVmTVA=
