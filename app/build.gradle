@@ -45,7 +45,7 @@ dependencies {
 
 deploygate {
     userName = "shoma2da"
-    token = token
+    token = deploygatetoken
 
     apks {
         debug {

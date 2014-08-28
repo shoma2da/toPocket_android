@@ -8,4 +8,4 @@ after_success:
   - ./gradlew uploadDeployGate
 env:
   global:
-    secure: FiG25ilkwrDetjZO0UQKZ7xZNLyCHr4rNrjWhmWxTSCzf5UjqfXKnL0qLTleSMoKdJJZscvPEEaurRrTWAi8IX1JP0hy4Co2dbI7AwEXrZpfmKLfOEDe2yu6DEFeCwbsPoen88kJXVLEMDo8n1gOGtNmk2WGbCA5JLBStcy8h+4=
+    secure: awhuZEoY67ZBlOy58uYu0CxGTurt9lmkfX9UNOJ9J2lwAW+Mh5/D8WbCB0aWTpvWoFG3aGZBfjHW7Rpilr4/POjte63KlpmROiPTEVOnLZaizhWT6yNNQmH7FOU8rFjEpAxE83mwOeIY/trZAXwS2isOWZyMCqJBAPxu5lVmTVA=
