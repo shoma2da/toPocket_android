@@ -2,10 +2,12 @@ package com.hatenablog.shoma2da.android.topocket.oauth;
 
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.hatenablog.shoma2da.android.topocket.WatchClipboardService;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.AccessToken;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.ConsumerKey;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
@@ -36,6 +38,9 @@ public class AccessTokenLoaderCallbackImpl implements LoaderCallbacks<AccessToke
         
         //表示
         Toast.makeText(mContext, accessToken.getUserName() + "さん、ようこそ！", Toast.LENGTH_LONG).show();
+
+        //サービスを起動
+        mContext.startService(new Intent(mContext, WatchClipboardService.class));
     }
 
     @Override public void onLoaderReset(Loader<AccessToken> loader) { }
