@@ -49,6 +49,7 @@ class On implements SwitchActionStrategy, LoaderCallbacks<RequestToken> {
         }
 
         //リクエストトークンの取得を開始
+        Toast.makeText(mContext, "ログインの準備中です。しばらくお待ちください。", Toast.LENGTH_LONG).show();
         mLoaderManager.getLoader(0).forceLoad();
     }
 
