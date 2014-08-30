@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
@@ -47,7 +48,20 @@ public class MainActivity extends Activity {
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
     }
-    
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //ログイン状態を確認
+        SharedPreferences preferences = getSharedPreferences(SwitchListener.FILE_CHECKED_STATE, Context.MODE_PRIVATE);
+        boolean isChecked = preferences.getBoolean(SwitchListener.KEY_VALUE, false);
+        if (isChecked && (new LoginChecker().check(this) == false)) {
+            CheckBox startWatchClipboardSwitch = (CheckBox)findViewById(R.id.StartWatchClipboardSwitch);
+            startWatchClipboardSwitch.setChecked(false);
+        }
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
