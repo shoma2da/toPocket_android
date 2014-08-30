@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.hatenablog.shoma2da.android.topocket.oauth.AccessTokenLoaderCallbackImpl;
+import com.hatenablog.shoma2da.android.topocket.oauth.LoginChecker;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.ConsumerKey;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.util.RequestTokenLoader;
@@ -28,11 +30,11 @@ public class MainActivity extends Activity {
         SharedPreferences preferences = getSharedPreferences(SwitchListener.FILE_CHECKED_STATE, Context.MODE_PRIVATE);
         boolean isChecked = preferences.getBoolean(SwitchListener.KEY_VALUE, false);
         startWatchClipboardSwitch.setChecked(isChecked);
-        
+
         //チェック時の動作を規定
         startWatchClipboardSwitch.setOnCheckedChangeListener(new SwitchListener(getLoaderManager()));
-        
-        //URLスキーマで起動された時はアクセストークンを取得するタイミングかも
+
+        //URLスキーマで起動された時はアクセストークンを取得するタイミング
         RequestToken requestToken = new RequestTokenLoader(this).load();
         if (getIntent().getDataString() != null && requestToken != null) {
             AccessTokenLoaderCallbackImpl callback = new AccessTokenLoaderCallbackImpl(this, new ConsumerKey(), requestToken);

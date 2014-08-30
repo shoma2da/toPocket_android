@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.flurry.android.FlurryAgent;
 import com.hatenablog.shoma2da.android.topocket.WatchClipboardService;
 import com.hatenablog.shoma2da.android.topocket.oauth.AuthPageViewer;
+import com.hatenablog.shoma2da.android.topocket.oauth.LoginChecker;
 import com.hatenablog.shoma2da.android.topocket.oauth.RequestTokenLoader;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.util.RequestTokenSaver;
@@ -40,14 +41,15 @@ class On implements SwitchActionStrategy, LoaderCallbacks<RequestToken> {
             Toast.makeText(mContext, "エラー！！ネットワークに接続してからもう一度スイッチを押してください", Toast.LENGTH_LONG).show();
             return;
         }
-        
-        //リクエストトークンを未取得だったら取得しにいく
-        if (new com.hatenablog.shoma2da.android.topocket.oauth.model.util.RequestTokenLoader(mContext).load() == null) {
-            mLoaderManager.getLoader(0).forceLoad();
+
+        //既にログイン成功していたらサービスを起動
+        if (new LoginChecker().check(mContext)) {
+            mContext.startService(new Intent(mContext, WatchClipboardService.class));
+            return;
         }
-        
-        //サービスを起動
-        mContext.startService(new Intent(mContext, WatchClipboardService.class));
+
+        //リクエストトークンの取得を開始
+        mLoaderManager.getLoader(0).forceLoad();
     }
 
     @Override
