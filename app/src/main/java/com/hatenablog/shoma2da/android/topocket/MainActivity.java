@@ -20,6 +20,8 @@ import com.hatenablog.shoma2da.android.topocket.oauth.model.util.RequestTokenLoa
 
 public class MainActivity extends Activity {
 
+    private boolean mIsInGetAccessToken = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,7 @@ public class MainActivity extends Activity {
         //URLスキーマで起動された時はアクセストークンを取得するタイミング
         RequestToken requestToken = new RequestTokenLoader(this).load();
         if (getIntent().getDataString() != null && requestToken != null) {
+            mIsInGetAccessToken = true;
             AccessTokenLoaderCallbackImpl callback = new AccessTokenLoaderCallbackImpl(this, new ConsumerKey(), requestToken);
             getLoaderManager().initLoader(1, null, callback);
             getLoaderManager().getLoader(1).forceLoad();
@@ -53,10 +56,10 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        //ログイン状態を確認
+        //ログイン状態を確認してボタンの表示を変更
         SharedPreferences preferences = getSharedPreferences(SwitchListener.FILE_CHECKED_STATE, Context.MODE_PRIVATE);
         boolean isChecked = preferences.getBoolean(SwitchListener.KEY_VALUE, false);
-        if (isChecked && (new LoginChecker().check(this) == false)) {
+        if ((mIsInGetAccessToken == false) && isChecked && (new LoginChecker().check(this) == false)) {
             CheckBox startWatchClipboardSwitch = (CheckBox)findViewById(R.id.StartWatchClipboardSwitch);
             startWatchClipboardSwitch.setChecked(false);
         }
