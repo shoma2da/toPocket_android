@@ -39,11 +39,21 @@ public class WatchClipboardListener implements OnPrimaryClipChangedListener {
         if (isUrl(text)) {
             if (isConnectNetwork() == false) {
                 Toast.makeText(mContext, "Pocketに保存できません。ネットワーク状態を確認してください。", Toast.LENGTH_LONG).show();
+                return;
             }
             
-            mAddRequestManager.request(text);
-            Toast.makeText(mContext, "Pocketに保存しました。", Toast.LENGTH_SHORT).show();
-            
+            mAddRequestManager.request(text, new AddRequestManager.Callback() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(mContext, "Pocketに保存しました。", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(mContext, "Pocketへの保存に失敗しました。", Toast.LENGTH_SHORT).show();
+                }
+            });
+
             //イベント記録
             Map<String, String> params = new HashMap<String, String>();
             params.put("url", text);

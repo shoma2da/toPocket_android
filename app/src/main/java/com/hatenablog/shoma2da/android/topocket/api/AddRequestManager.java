@@ -26,10 +26,10 @@ public class AddRequestManager {
         mAccessToken = accessToken;
     }
     
-    public void request(final String urlStr) {
-        new AsyncTask<Void, Void, Void>() {
+    public void request(final String urlStr, final Callback callback) {
+        new AsyncTask<Void, Void, Boolean>() {
             @Override
-            protected Void doInBackground(Void... params) {
+            protected Boolean doInBackground(Void... params) {
                 try {
                     URL url = new URL(ADD_URL);
                     HttpURLConnection connection = (HttpURLConnection)url.openConnection();
@@ -42,18 +42,35 @@ public class AddRequestManager {
                     printWriter.flush();
                     printWriter.close();
                     
-                    Log.d("toPocket", "response code is " + connection.getResponseCode());
+                    int responseCode = connection.getResponseCode();
                     
                     InputStream inputStream = connection.getInputStream();
                     inputStream.close();
+
+                    return responseCode == 200;
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
+                    return false;
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return false;
                 }
-                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                super.onPostExecute(result);
+                if (result) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure();
+                }
             }
         }.execute();
     }
-    
+
+    public static interface Callback {
+        void onSuccess();
+        void onFailure();
+    }
 }
