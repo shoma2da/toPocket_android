@@ -12,6 +12,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.hatenablog.shoma2da.android.topocket.ToPocketApplication;
 import com.hatenablog.shoma2da.android.topocket.api.AddRequestManager;
+import com.hatenablog.shoma2da.android.topocket.lib.analytics.TrackerWrapper;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -46,7 +47,7 @@ public class WatchClipboardListener implements OnPrimaryClipChangedListener {
             Toast.makeText(mContext, "Pocketに保存しました。", Toast.LENGTH_SHORT).show();
             
             //イベント記録
-            Tracker tracker = ((ToPocketApplication)mContext.getApplicationContext()).getTracker();
+            TrackerWrapper tracker = ((ToPocketApplication)mContext.getApplicationContext()).getTracker();
             tracker.send(new HitBuilders.EventBuilder()
                     .setCategory("clipboard")
                     .setAction("add_item")

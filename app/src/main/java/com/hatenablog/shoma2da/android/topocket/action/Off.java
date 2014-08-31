@@ -7,6 +7,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.hatenablog.shoma2da.android.topocket.ToPocketApplication;
 import com.hatenablog.shoma2da.android.topocket.WatchClipboardService;
+import com.hatenablog.shoma2da.android.topocket.lib.analytics.TrackerWrapper;
 
 class Off implements SwitchActionStrategy {
     
@@ -19,7 +20,7 @@ class Off implements SwitchActionStrategy {
     @Override
     public void act() {
         //イベント記録
-        Tracker tracker = ((ToPocketApplication)mContext.getApplicationContext()).getTracker();
+        TrackerWrapper tracker = ((ToPocketApplication)mContext.getApplicationContext()).getTracker();
         tracker.send(new HitBuilders.EventBuilder()
                 .setCategory("switch")
                 .setAction("off")

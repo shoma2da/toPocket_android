@@ -11,6 +11,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.hatenablog.shoma2da.android.topocket.lib.analytics.TrackerWrapper;
 import com.hatenablog.shoma2da.android.topocket.oauth.AccessTokenLoaderCallbackImpl;
 import com.hatenablog.shoma2da.android.topocket.oauth.LoginChecker;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.ConsumerKey;
@@ -28,7 +29,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         //イベント取得
-        Tracker tracker = ((ToPocketApplication) getApplication()).getTracker();
+        TrackerWrapper tracker = ((ToPocketApplication) getApplication()).getTracker();
         tracker.setScreenName("MainActivity");
         tracker.send(new HitBuilders.AppViewBuilder().build());
 
