@@ -11,8 +11,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.hatenablog.shoma2da.android.topocket.ToPocketApplication;
 import com.hatenablog.shoma2da.android.topocket.WatchClipboardService;
+import com.hatenablog.shoma2da.android.topocket.lib.analytics.TrackerWrapper;
 import com.hatenablog.shoma2da.android.topocket.oauth.AuthPageViewer;
 import com.hatenablog.shoma2da.android.topocket.oauth.LoginChecker;
 import com.hatenablog.shoma2da.android.topocket.oauth.RequestTokenLoader;
@@ -32,8 +35,13 @@ class On implements SwitchActionStrategy, LoaderCallbacks<RequestToken> {
     
     @Override
     public void act() {
-        FlurryAgent.logEvent("switch_on");
-        
+        //イベント記録
+        TrackerWrapper tracker = ((ToPocketApplication)mContext.getApplicationContext()).getTracker();
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("switch")
+                .setAction("on")
+                .build());
+
         //ネットワーク状態の確認
         ConnectivityManager connectivityManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();

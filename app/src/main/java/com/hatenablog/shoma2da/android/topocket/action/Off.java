@@ -3,8 +3,11 @@ package com.hatenablog.shoma2da.android.topocket.action;
 import android.content.Context;
 import android.content.Intent;
 
-import com.flurry.android.FlurryAgent;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.hatenablog.shoma2da.android.topocket.ToPocketApplication;
 import com.hatenablog.shoma2da.android.topocket.WatchClipboardService;
+import com.hatenablog.shoma2da.android.topocket.lib.analytics.TrackerWrapper;
 
 class Off implements SwitchActionStrategy {
     
@@ -16,7 +19,13 @@ class Off implements SwitchActionStrategy {
     
     @Override
     public void act() {
-        FlurryAgent.logEvent("switch_off");
+        //イベント記録
+        TrackerWrapper tracker = ((ToPocketApplication)mContext.getApplicationContext()).getTracker();
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("switch")
+                .setAction("off")
+                .build());
+
         mContext.stopService(new Intent(mContext, WatchClipboardService.class));
     }
 

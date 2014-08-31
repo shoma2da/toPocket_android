@@ -1,19 +1,23 @@
 package com.hatenablog.shoma2da.android.topocket.clipboard;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.ClipboardManager;
 import android.content.ClipboardManager.OnPrimaryClipChangedListener;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.hatenablog.shoma2da.android.topocket.ToPocketApplication;
 import com.hatenablog.shoma2da.android.topocket.api.AddRequestManager;
+import com.hatenablog.shoma2da.android.topocket.lib.analytics.TrackerWrapper;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WatchClipboardListener implements OnPrimaryClipChangedListener {
     
@@ -29,8 +33,6 @@ public class WatchClipboardListener implements OnPrimaryClipChangedListener {
     
     @Override
     public void onPrimaryClipChanged() {
-        FlurryAgent.logEvent("clipboard_change");
-        
         if (mClipboardManager.getPrimaryClip() == null || mClipboardManager.getPrimaryClip().getItemAt(0) == null) {
             return;
         }
@@ -45,9 +47,12 @@ public class WatchClipboardListener implements OnPrimaryClipChangedListener {
             Toast.makeText(mContext, "Pocketに保存しました。", Toast.LENGTH_SHORT).show();
             
             //イベント記録
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("url", text);
-            FlurryAgent.logEvent("add_pocket", params);
+            TrackerWrapper tracker = ((ToPocketApplication)mContext.getApplicationContext()).getTracker();
+            tracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("clipboard")
+                    .setAction("add_item")
+                    .setLabel(text)
+                    .build());
         }
     }
     

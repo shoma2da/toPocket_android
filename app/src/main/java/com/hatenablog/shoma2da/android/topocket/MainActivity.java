@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.widget.CheckBox;
 
 import com.crashlytics.android.Crashlytics;
-import com.flurry.android.FlurryAgent;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.hatenablog.shoma2da.android.topocket.lib.analytics.TrackerWrapper;
 import com.hatenablog.shoma2da.android.topocket.oauth.AccessTokenLoaderCallbackImpl;
 import com.hatenablog.shoma2da.android.topocket.oauth.LoginChecker;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.ConsumerKey;
@@ -25,7 +27,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         if (BuildConfig.DEBUG == false) { Crashlytics.start(this); }
         setContentView(R.layout.activity_main);
-        
+
+        //イベント取得
+        TrackerWrapper tracker = ((ToPocketApplication) getApplication()).getTracker();
+        tracker.setScreenName("MainActivity");
+        tracker.send(new HitBuilders.AppViewBuilder().build());
+
         //チェックボタンの初期表示設定
         CheckBox startWatchClipboardSwitch = (CheckBox)findViewById(R.id.StartWatchClipboardSwitch);
         SharedPreferences preferences = getSharedPreferences(SwitchListener.FILE_CHECKED_STATE, Context.MODE_PRIVATE);
@@ -63,16 +70,4 @@ public class MainActivity extends Activity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FlurryAgent.onStartSession(this, "QKBP8MGBQHB99WDSFN5X");
-    }
-    
-    @Override
-    protected void onStop() {
-        super.onStop();
-        FlurryAgent.onEndSession(this);
-    }
-    
 }
