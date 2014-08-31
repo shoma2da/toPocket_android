@@ -2,15 +2,18 @@ package com.hatenablog.shoma2da.android.topocket;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CheckBox;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.hatenablog.shoma2da.android.topocket.lib.analytics.TrackerWrapper;
 import com.hatenablog.shoma2da.android.topocket.oauth.AccessTokenLoaderCallbackImpl;
 import com.hatenablog.shoma2da.android.topocket.oauth.LoginChecker;
@@ -38,6 +41,14 @@ public class MainActivity extends Activity {
         SharedPreferences preferences = getSharedPreferences(SwitchListener.FILE_CHECKED_STATE, Context.MODE_PRIVATE);
         boolean isChecked = preferences.getBoolean(SwitchListener.KEY_VALUE, false);
         startWatchClipboardSwitch.setChecked(isChecked);
+
+        //Pocketを開けるようにする
+        findViewById(R.id.textOpenPocket).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(getPocketIntent());
+            }
+        });
 
         //チェック時の動作を規定
         startWatchClipboardSwitch.setOnCheckedChangeListener(new SwitchListener(getLoaderManager()));
@@ -68,6 +79,15 @@ public class MainActivity extends Activity {
             CheckBox startWatchClipboardSwitch = (CheckBox)findViewById(R.id.StartWatchClipboardSwitch);
             startWatchClipboardSwitch.setChecked(false);
         }
+    }
+
+    public Intent getPocketIntent() {
+        PackageManager packageManager = getApplicationContext().getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage("com.ideashower.readitlater.pro");
+        if (intent == null) {
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://getpocket.com/a/queue/"));
+        }
+        return intent;
     }
 
 }
