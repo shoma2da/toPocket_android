@@ -1,23 +1,26 @@
 package com.hatenablog.shoma2da.android.topocket.clipboard;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ClipboardManager;
 import android.content.ClipboardManager.OnPrimaryClipChangedListener;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.hatenablog.shoma2da.android.topocket.ToPocketApplication;
 import com.hatenablog.shoma2da.android.topocket.api.AddRequestManager;
 import com.hatenablog.shoma2da.android.topocket.lib.analytics.TrackerWrapper;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 public class WatchClipboardListener implements OnPrimaryClipChangedListener {
     
@@ -37,15 +40,40 @@ public class WatchClipboardListener implements OnPrimaryClipChangedListener {
             return;
         }
         
-        String text = mClipboardManager.getPrimaryClip().getItemAt(0).getText().toString();
+        final String text = mClipboardManager.getPrimaryClip().getItemAt(0).getText().toString();
         if (isUrl(text)) {
             if (isConnectNetwork() == false) {
                 Toast.makeText(mContext, "Pocketに保存できません。ネットワーク状態を確認してください。", Toast.LENGTH_LONG).show();
+                return;
             }
             
-            mAddRequestManager.request(text);
-            Toast.makeText(mContext, "Pocketに保存しました。", Toast.LENGTH_SHORT).show();
-            
+            mAddRequestManager.request(text, new AddRequestManager.Callback() {
+                @Override
+                public void onSuccess() {
+                    //ホストを取得
+                    Uri uri = Uri.parse(text);
+
+                    //通知組み立て
+                    Notification notification = new NotificationCompat.Builder(mContext)
+                                                        .setSmallIcon(android.R.drawable.ic_dialog_info)
+                                                        .setTicker("Pocketに保存しました " + uri.getHost())
+                                                        .setContentTitle("Pocketに保存しました")
+                                                        .setContentText(text)
+                                                        .setAutoCancel(true)
+                                                        .setContentIntent(PendingIntent.getActivity(mContext, 0, getPocketIntent(), 0))
+                                                        .build();
+
+                    //通知表示
+                    NotificationManager notificationManager = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(1000, notification);
+                }
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(mContext, "Pocketへの保存に失敗しました。", Toast.LENGTH_SHORT).show();
+                }
+            });
+
             //イベント記録
             TrackerWrapper tracker = ((ToPocketApplication)mContext.getApplicationContext()).getTracker();
             tracker.send(new HitBuilders.EventBuilder()
@@ -54,6 +82,15 @@ public class WatchClipboardListener implements OnPrimaryClipChangedListener {
                     .setLabel(text)
                     .build());
         }
+    }
+
+    public Intent getPocketIntent() {
+        PackageManager packageManager = mContext.getApplicationContext().getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage("com.ideashower.readitlater.pro");
+        if (intent == null) {
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://getpocket.com/a/queue/"));
+        }
+        return intent;
     }
     
     public boolean isConnectNetwork() {
