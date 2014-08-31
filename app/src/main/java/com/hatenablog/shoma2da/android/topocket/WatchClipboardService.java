@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 import com.hatenablog.shoma2da.android.topocket.api.AddRequestManager;
 import com.hatenablog.shoma2da.android.topocket.clipboard.WatchClipboardListener;
@@ -26,7 +27,8 @@ public class WatchClipboardService extends Service {
     @SuppressWarnings("deprecation")
     public int onStartCommand(Intent intent, int flags, int startId) {
         FlurryAgent.logEvent("start_service");
-        
+        if (BuildConfig.DEBUG == false) { Crashlytics.start(this); }
+
         //Notificatio表示
         Notification.Builder builder = new Notification.Builder(this);
         builder.setTicker("Pocketに簡単に投稿できます");
