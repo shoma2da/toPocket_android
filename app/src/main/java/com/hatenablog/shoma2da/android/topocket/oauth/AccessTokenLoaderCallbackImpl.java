@@ -7,7 +7,11 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.hatenablog.shoma2da.android.topocket.ToPocketApplication;
 import com.hatenablog.shoma2da.android.topocket.WatchClipboardService;
+import com.hatenablog.shoma2da.android.topocket.lib.analytics.TrackerWrapper;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.AccessToken;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.ConsumerKey;
 import com.hatenablog.shoma2da.android.topocket.oauth.model.RequestToken;
@@ -41,6 +45,14 @@ public class AccessTokenLoaderCallbackImpl implements LoaderCallbacks<AccessToke
 
         //サービスを起動
         mContext.startService(new Intent(mContext, WatchClipboardService.class));
+
+        //イベント記録
+        TrackerWrapper tracker = ((ToPocketApplication)mContext.getApplicationContext()).getTracker();
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("login")
+                .setAction("success")
+                .setLabel(accessToken.getUserName())
+                .build());
     }
 
     @Override public void onLoaderReset(Loader<AccessToken> loader) { }
